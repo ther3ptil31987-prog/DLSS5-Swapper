@@ -39,65 +39,29 @@ Both are on the latest release page, with `SHA256SUMS.txt` beside them.
 - **Right-click shortcuts:** open/copy folder, rescan, change cover, restore originals or hide a game.
 - **Backups and History:** restore original files, keep installation records, and copy History/activity/install logs.
 - **Save diagnostics:** one file with the install log, the game’s own ReShade and Feeder logs, the manifest and your driver - shown to you before it is written, and ready to attach to a report.
-- **In-game overlay:** press **F8** to open the app's own panel over the running game and move the real DLSS Neural Rendering sliders while you play. Supports the **DLSS5-Feeder** and **RenoDX v4.7** routes only. Drag the grip in its bottom right corner to resize it; each game remembers its own size.
+- **In-game overlay:** press **F8** to open the app's own panel over the running game and move the real DLSS Neural Rendering sliders while you play. Supports the **DLSS5-Feeder** and **RenoDX** routes only, and it knows both RenoDX builds the app ships (6.5.3 and the older 4.7). Drag the grip in its bottom right corner to resize it; each game remembers its own size.
 - **Rendering API override:** optional, per game, with **Automatic** as the default; detection is never overwritten.
 - **Custom add-ons:** the Add-ons page remains available alongside the integrated installation routes.
 - **Multipass neural rendering:** an installation route that runs the neural pass up to ten times per frame, on DX12, DX11 and 64-bit DX9 - including games with no DLSS of their own.
 - **Community (BETA):** read what worked for other people, narrowed to the games on your PC and the graphics card in it, leave your own report, and talk it over underneath it. Opt-in, and everything you leave can be edited, deleted or withdrawn.
 - **Community chat:** one live room for everyone using the app - screenshots, game cards, replies with mentions and reactions.
 
-## New in 2.2.7
+## New in 2.2.9
 
-Find the reviews that matter to you, hear about it when people answer you - and every fix promised on the tracker.
-
-### ✨ New
-
-**1 · Filter by your graphics card** - pick your card in the Community filter and see only the reviews from people with that same card. Your own card is always the first choice.
-
-<p><img src="docs/screenshots/15-feature-gpu-filter.png" alt="The Community page filtered to your own graphics card" width="100%"></p>
-
-**2 · Only the reviews from your card** - open any game with the filter on, and it starts on what people with your card found. Everyone else is one click away.
-
-<p><img src="docs/screenshots/16-feature-gpu-reviews.png" alt="A game opened on the reviews from people with your graphics card" width="100%"></p>
-
-**3 · Reviews for your games** - switch to **My games** and the page shows only the games installed on your PC, tagged when DLSS 5 is already in them.
-
-<p><img src="docs/screenshots/17-feature-my-games.png" alt="My games: community reviews for the games installed on this PC" width="100%"></p>
-
-**4 · See it before you install** - open any game in your library: what the community found for it is right above the install button.
-
-<p><img src="docs/screenshots/18-feature-before-install.png" alt="What the community found, in the game's page right above Install" width="100%"></p>
-
-Also new: **My comments** (everything you reported, in one place), **Sort** by most recent, most reports or A-Z, API tags on every card ([#288]), and **notifications** when someone mentions you in the chat, replies to you there, or reacts to your review or your message.
-
-### 🔧 Fixed
+Four faults from the tracker, fixed at the cause. Every one of them was reported by somebody in it.
 
 | | |
 |---|---|
-| **DirectDraw never installed** | dgVoodoo was downloaded only for DX8 and DX9, so every DirectDraw game failed with `errDgVoodooMissing` - Gens and the other emulators included ([#292], [#279], [#150]) |
-| **Prey, Titanfall 2, Call of Duty 2 and Max Payne read as "No 3D executable"** | Their renderer is a DLL beside the executable. A Direct3D library in the executable's own folder is now enough to offer it ([#259], [#249]) |
-| **Portal was filed under Half-Life 2** | Both run `hl2.exe`, and no report ever carried the store id it should have. An executable many games share - `hl2.exe`, every emulator - no longer decides which card a report lands on ([#274]) |
-| **The read-only ReShade.ini banner came back** | 2.2.5 cleared it only when a game was opened in the app. Every game this app installed into is checked once each time it starts ([#155]) |
-| **Games under Program Files failed with `EPERM`** | Windows protects that folder. The install now says so up front, in words: run as administrator, or move the game ([#301]) |
-| **The driver warning read like a wall** | It is a warning: many people run newer drivers without trouble, especially with MSI Afterburner and RivaTuner closed. It says so now ([#300], [#278]) |
-| **"DLSS was installed normally" before it was** | The overlay message appeared before the install finished, even when it then failed ([#275]) |
-| **Uninstalling left ReShade in games** | Uninstalling never touches game folders. The uninstaller now says so and points to **Restore originals** first ([#266]) |
+| **The installer crashed before it opened** | On some machines the setup died instantly with `0xc0000005`, no window and no prompt, while the portable build was fine. The installer framework read past the end of a path Windows handed it. Fixed upstream, and this release is built with the fixed version ([#344]) |
+| **Restore originals went dead with the files still in the game** | A finished restore renames the backup record aside, and everything that decides whether a game has anything installed read only the live one. The app now offers the newest retired record whose files are still in the game, and restores from the same backups ([#325]) |
+| **dgVoodoo2 flagged by antivirus** | Upstream released 2.87.5 precisely because engines flag 2.87.4, and the app was pinned to 2.87.4 ([#390]) |
+| **ReShade never started in a wrapped DirectX 8/9 game** | Inside dgVoodoo the game is a DirectX 11 one, and some setups load only `d3d11.dll`. The **ReShade file** choice is offered for these games now ([#343], [#374]) |
 
-[Full 2.2.7 notes →](https://github.com/rakanki911/DLSS5-Swapper/releases/tag/v2.2.7)
-
-[#150]: https://github.com/rakanki911/DLSS5-Swapper/issues/150
-[#155]: https://github.com/rakanki911/DLSS5-Swapper/issues/155
-[#249]: https://github.com/rakanki911/DLSS5-Swapper/issues/249
-[#259]: https://github.com/rakanki911/DLSS5-Swapper/issues/259
-[#266]: https://github.com/rakanki911/DLSS5-Swapper/issues/266
-[#274]: https://github.com/rakanki911/DLSS5-Swapper/issues/274
-[#275]: https://github.com/rakanki911/DLSS5-Swapper/issues/275
-[#278]: https://github.com/rakanki911/DLSS5-Swapper/issues/278
-[#279]: https://github.com/rakanki911/DLSS5-Swapper/issues/279
-[#288]: https://github.com/rakanki911/DLSS5-Swapper/issues/288
-[#292]: https://github.com/rakanki911/DLSS5-Swapper/issues/292
-[#300]: https://github.com/rakanki911/DLSS5-Swapper/issues/300
-[#301]: https://github.com/rakanki911/DLSS5-Swapper/issues/301
+[#325]: https://github.com/rakanki911/DLSS5-Swapper/issues/325
+[#343]: https://github.com/rakanki911/DLSS5-Swapper/issues/343
+[#344]: https://github.com/rakanki911/DLSS5-Swapper/issues/344
+[#374]: https://github.com/rakanki911/DLSS5-Swapper/issues/374
+[#390]: https://github.com/rakanki911/DLSS5-Swapper/issues/390
 
 ## Earlier releases
 
@@ -105,6 +69,8 @@ Each one is written up in full - what broke, why, and what was changed.
 
 | | |
 |---|---|
+| **2.2.8** | [A second theme, and every add-on brought current](docs/releases/v2.2.8.md) - a whole second design, DLSS5-Feeder 1.17.0, RenoDX 6.5.3, a second OptiScaler build per game, and ten faults fixed |
+| **2.2.7** | [Find the reviews that matter to you](docs/releases/v2.2.7.md) - filter by your card, reviews for your games, notifications, and eight faults fixed |
 | **2.2.6** | [Community chat](docs/releases/v2.2.6.md) - one live room for everyone, and the right add-on on every route |
 | **2.2.5** | [Multipass](docs/releases/v2.2.5.md) - the neural pass up to ten times per frame, plus nine faults fixed at the cause |
 | **2.2.4** | [The Community page](docs/releases/v2.2.4.md) - compare notes with everyone else, plus eight faults fixed at the cause |
@@ -122,13 +88,13 @@ Every release also carries its own notes and downloads on the
 | --- | --- |
 | **System** | Windows 10/11 x64; compatible 32-bit and 64-bit games |
 | **ReShade / Feeder GPUs** | RTX 20 / 30 / 40 / 50; older-series support is reported by the bundled modified runtime's author |
-| **OptiScaler GPUs** | 64-bit games with native DLSS enabled. The bundled neural model runs on **Blackwell** (RTX 50 / RTX PRO Blackwell); an older card needs a modded `nvngx_dlssnr.dll` you supply, which is never overwritten. Driver **616.56** recommended |
+| **OptiScaler GPUs** | 64-bit games with native DLSS enabled. The bundled neural model runs on **Blackwell** (RTX 50 / RTX PRO Blackwell); an older card needs a modded `nvngx_dlssnr.dll` you supply, which is never overwritten. Driver **616.56** or newer |
 | **DirectX 12** | Native DLSS, Feeder, or eligible OptiScaler games |
 | **DirectX 11** | Feeder for 32/64-bit games; eligible OptiScaler games |
 | **DirectX 9 / 8** | DX9: 32/64-bit; DX8: 32-bit, through dgVoodoo2 → DX11 → Feeder |
 | **Vulkan / OpenGL** | ReShade/Feeder; eligible Vulkan games can also use OptiScaler |
 | **DirectX 10** | Not directly supported by Feeder; choose DX11 when available |
-| **In-game overlay** | 64-bit DirectX 11 / 12 games with ReShade add-on support; **DLSS5-Feeder and RenoDX v4.7 only** |
+| **In-game overlay** | 64-bit DirectX 11 / 12 games with ReShade add-on support; **DLSS5-Feeder and RenoDX only** |
 
 OptiScaler's DX11/Vulkan path uses a DX12 bridge with FSR output by default.
 For Vulkan backend changes, **restore originals first**. OptiScaler is not the emulator/non-DLSS route.

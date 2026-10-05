@@ -15,7 +15,7 @@ window.mountOverlayLive = (root, { designOnly = false } = {}) => {
     ['NR Preset',4,0,0,3,['Default','Preset #1','Preset #2','Preset #3']],
     ['NR Style',4,0,0,2,['Default','Natural','Cinematic']],
     ['Depth Convention',4,0,0,2,['Use game NGX flag','Force normal depth','Force inverted depth']]
-  ].map(([name,kind,value,min,max,options],i)=>({id:101+i,name,kind,value,min,max,options,step:kind===0?.01:1,available:true,effect:'RenoDX v4.7'})) };
+  ].map(([name,kind,value,min,max,options],i)=>({id:101+i,name,kind,value,min,max,options,step:kind===0?.01:1,available:true,effect:'RenoDX 6.5.3'})) };
   let status = sample, epoch = 0, preview = true, connectedOnce = false, autoEpoch = 0;
   // Only reasons worth reading. While the bridge works the badge in the
   // header already says CONNECTED, so the line below it stays out of sight.
@@ -146,9 +146,9 @@ window.mountOverlayLive = (root, { designOnly = false } = {}) => {
       const toggle=el('button','ol-model','Show RenoDX extras');extra.before(toggle);extra.hidden=true;
       toggle.onclick=()=>{extra.hidden=!extra.hidden;section.hidden=!extra.hidden;toggle.textContent=extra.hidden?'Show RenoDX extras':'Show Feeder controls';};
     }
-    panel.querySelector('footer').textContent = status===sample?'Interactive design preview only. Changes here do not affect a game. The installed overlay connects automatically to the verified RenoDX v4.7 build.':status?.nrAvailable
-      ? 'Live RenoDX v4.7 settings. A/B/C select NR Style, not AI models. Scroll More Controls; click a number to type. Home keeps the original tools available.'
-      : 'Waiting for the verified RenoDX v4.7 build. Connection is automatic; unsupported builds are refused. Original tools remain available.';
+    panel.querySelector('footer').textContent = status===sample?'Interactive design preview only. Changes here do not affect a game. The installed overlay connects automatically to the verified RenoDX build.':status?.nrAvailable
+      ? 'Live RenoDX settings. A/B/C select NR Style, not AI models. Scroll More Controls; click a number to type. Home keeps the original tools available.'
+      : 'Waiting for the verified RenoDX build. Connection is automatic; a build this overlay does not know is refused. Original tools remain available.';
   }
   function build() {
     window.mountOverlayPanel(root);
@@ -168,7 +168,7 @@ window.mountOverlayLive = (root, { designOnly = false } = {}) => {
         sample.feedPresent=!sample.feedPresent;
         sample.feedReason='Design preview only. Feeder cfg controls; work resolution, filter and sharpness require DX11.';
         sample.badge=false;
-        sample.feedTools=[['Feeder enabled (original panel)',1,1,0,1],['Work resolution (%)',0,100,50,100],['Work sharpness',0,.3,0,1],['Motion scale X',0,1,-2,2],['Motion scale Y',0,1,-2,2],['HDR contract',0,-1,-1,1],['Depth convention',0,-1,-1,1],['Work upscale',0,0,0,2],['HDR10 bridge',0,-1,-1,1],['HDR paper white (nits)',0,203,50,1000]].map(([name,kind,value,min,max],i)=>({id:301+i,name,kind,value,min,max,step:[0,1,5,6,7,8,9].includes(i)?1:.01,available:i!==0,effect:'Feeder 0.15.1'}));
+        sample.feedTools=[['Feeder enabled (original panel)',1,1,0,1],['Work resolution (%)',0,100,50,100],['Work sharpness',0,.3,0,1],['Motion scale X',0,1,-2,2],['Motion scale Y',0,1,-2,2],['HDR contract',0,-1,-1,1],['Depth convention',0,-1,-1,1],['Work upscale',0,0,0,2],['HDR10 bridge',0,-1,-1,1],['HDR paper white (nits)',0,203,50,1000],['Output stabiliser hold',0,0,0,1],['Stabiliser change tolerance',0,.04,0,1]].map(([name,kind,value,min,max],i)=>({id:301+i,name,kind,value,min,max,step:[0,1,5,6,7,8,9].includes(i)?1:.01,available:i!==0,effect:'Feeder 1.17.0'}));
         build();update();
       };
       modes.after(backend);
@@ -178,7 +178,7 @@ window.mountOverlayLive = (root, { designOnly = false } = {}) => {
     panel.querySelector('.ol-prototype').textContent = status ? 'LIVE RESHADE' : 'DISCONNECTED';
     panel.querySelector('.ol-eyebrow').textContent = 'DLSS 5 SWAPPER · INJECTED TOOLS';
     for (const element of [...panel.children]) if (element !== modes && element.tagName !== 'HEADER') element.remove();
-    const info = el('p', 'ol-live-note', status===sample?'Design preview; no game connection.':status?.nrAvailable ? 'RenoDX v4.7 controls use its original callback. FX controls below are separate. Experimental adapter; original tool windows remain available.' : 'Waiting for compatible RenoDX. FX controls do not control DLSS.');
+    const info = el('p', 'ol-live-note', status===sample?'Design preview; no game connection.':status?.nrAvailable ? 'RenoDX controls use its original callback. FX controls below are separate. Experimental adapter; original tool windows remain available.' : 'Waiting for compatible RenoDX. FX controls do not control DLSS.');
     panel.append(info);
     const tools = el('div', 'ol-live-tools'); panel.append(tools);
     const add = t => addTool(tools, t);

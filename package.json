@@ -1,6 +1,6 @@
 {
   "name": "dlss5-swapper",
-  "version": "2.2.7",
+  "version": "2.2.9",
   "description": "DLSS 5 (Neural Rendering) for your games - a library that finds them, and one click to install",
   "main": "main.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "electron": "^33.2.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^26.15.3"
   },
   "build": {
     "appId": "com.rakan.dlss5swapper",
